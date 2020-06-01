@@ -5,12 +5,16 @@ Demos, test code, results of early stage tinkering with potentially relevant har
 ## PingLatency
 
 ### Summary
+
 This code connects to a WiFi network and regularly pings google.
-The average delay is calculated periodically and this value is used to set the brightness of an external LED.
+The average delay is calculated periodically and this value is used to set the brightness of an external LED connected to GPIO 2, if connection is lost then GPIO 0 is asserted and another external LED is made to glow.
+
+For my purposes I used a mellow blue LED for ping status, and a dramatic red LED for connection status. The brighter the ping status LED, the closer to 0 ms delay we see on average. If the connection status LED is ON, then the connection is lost.
 
 ### Additional information
 
 ### Setting up
+
 [This](https://www.allaboutcircuits.com/projects/breadboard-and-program-an-esp-01-circuit-with-the-arduino-ide/) article was used to learn how to setup a circuit necessary for flashing code to the ESP-01 module. This was achieved by using an Arduino Uno R3 as a TTL to USB converter, which itself was uploaded with an empty sketch like the following:
 
 ```
