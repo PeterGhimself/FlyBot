@@ -7,13 +7,19 @@
 #define STAPSK  "your_network_password"
 #endif
 
+#define PING_STATUS_LED 2
+#define CONNECTION_STATUS_LED 0
+
 const char* ssid     = STASSID;
 const char* password = STAPSK;
 
 ESP8266WiFiMulti WiFiMulti;
 
 void setup() {
-  pinMode(2, OUTPUT);
+  // ping status (blue) LED --> the brighter the LED, the closer to 0ms delay
+  pinMode(PING_STATUS_LED, OUTPUT);
+  // connection status (red) LED --> only ON if can't ping target url
+  pinMode(CONNECTION_STATUS_LED, OUTPUT);
   
   Serial.begin(115200);
 
@@ -52,8 +58,10 @@ void loop() {
 
   if (ping_success) {
     Serial.println("Pings succeeded :)");
+    digitalWrite(CONNECTION_STATUS_LED, LOW);
   } else {
-    //@TODO: if ping fails then have another (red) LED connected to GPIO0 turn ON
+    digitalWrite(CONNECTION_STATUS_LED, HIGH);
+    digitalWrite(PING_STATUS_LED, LOW);
     Serial.println("Pings failed :(");
   }
   
@@ -66,7 +74,7 @@ void loop() {
   int brightness = getBrightness(avg_time_ms);
   Serial.print("Setting brightness to: ");
   Serial.println(brightness);
-  analogWrite(2, brightness);
+  analogWrite(PING_STATUS_LED, brightness);
   
   // breathe
   Serial.println("Waiting 1 sec...");
